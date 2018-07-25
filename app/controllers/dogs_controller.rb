@@ -1,4 +1,4 @@
-class DogsController < ApplicationController
+class DogsController < OpenReadController
   before_action :set_dog, only: [:show, :update, :destroy]
 
   # GET /dogs
@@ -15,8 +15,8 @@ class DogsController < ApplicationController
 
   # POST /dogs
   def create
-    @dog = Dog.new(dog_params)
-
+    # @dog = Dog.new(dog_params)
+    @dog =current_user.dogs.build(dog_params)
     if @dog.save
       render json: @dog, status: :created, location: @dog
     else
