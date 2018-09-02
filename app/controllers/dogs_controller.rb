@@ -26,7 +26,7 @@ class DogsController < OpenReadController
 
   # PATCH/PUT /dogs/1
   def update
-    if @dog.update(dog_params)
+    if current_user.id == @dog.user_id && @dog.update(dog_params)
       render json: @dog
     else
       render json: @dog.errors, status: :unprocessable_entity
@@ -35,7 +35,11 @@ class DogsController < OpenReadController
 
   # DELETE /dogs/1
   def destroy
-    @dog.destroy
+    if current_user.id == @dog.user_id
+      @dog.destroy
+    else
+      render json: @dog.errors, status: :unprocessable_entity
+    end
   end
 
   private
